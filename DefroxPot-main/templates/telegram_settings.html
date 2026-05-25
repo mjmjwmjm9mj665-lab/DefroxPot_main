@@ -1,0 +1,556 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<style>
+    /* ============ TELEGRAM BLUE ACCENT SYSTEM ============ */
+    :root {
+        --tg-blue: #229ED9;
+        --tg-blue-dark: #1A7DB5;
+        --tg-blue-glow: rgba(34, 158, 217, 0.25);
+        --tg-blue-border: rgba(34, 158, 217, 0.2);
+        --tg-blue-bg: rgba(34, 158, 217, 0.06);
+    }
+
+    /* Step wizard */
+    .step-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        padding: 1rem 1.25rem;
+        border-radius: 10px;
+        background: rgba(34, 158, 217, 0.04);
+        border: 1px solid rgba(34, 158, 217, 0.1);
+        transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        animation: stepSlideIn 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        opacity: 0;
+    }
+
+    .step-item:nth-child(1) { animation-delay: 0.05s; }
+    .step-item:nth-child(2) { animation-delay: 0.15s; }
+    .step-item:nth-child(3) { animation-delay: 0.25s; }
+    .step-item:nth-child(4) { animation-delay: 0.35s; }
+
+    @keyframes stepSlideIn {
+        0%   { opacity: 0; transform: translateX(-40px) scale(0.92); }
+        60%  { opacity: 1; transform: translateX(6px) scale(1.01); }
+        80%  { transform: translateX(-2px) scale(0.995); }
+        100% { opacity: 1; transform: translateX(0) scale(1); }
+    }
+
+    .step-item:hover {
+        background: rgba(34, 158, 217, 0.09);
+        border-color: rgba(34, 158, 217, 0.25);
+        transform: translateX(6px);
+        box-shadow: 0 0 20px var(--tg-blue-glow);
+    }
+
+    .step-badge {
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--tg-blue), #1A7DB5);
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.75rem; font-weight: 800;
+        color: #fff;
+        flex-shrink: 0;
+        box-shadow: 0 0 10px var(--tg-blue-glow);
+        animation: badgeBreath 3s ease-in-out infinite;
+    }
+
+    @keyframes badgeBreath {
+        0%, 100% { box-shadow: 0 0 8px var(--tg-blue-glow); }
+        50% { box-shadow: 0 0 16px var(--tg-blue-glow), 0 0 30px rgba(34,158,217,0.15); }
+    }
+
+    .step-title {
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: var(--tg-blue);
+        letter-spacing: 0.3px;
+        margin-bottom: 2px;
+    }
+
+    .step-desc {
+        font-size: 0.72rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+    }
+
+    /* Form inputs with Telegram style */
+    .tg-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        background: rgba(34, 158, 217, 0.05);
+        border: 1px solid var(--tg-blue-border);
+        border-radius: 8px;
+        color: var(--text-primary);
+        font-family: var(--font-mono);
+        font-size: 0.82rem;
+        outline: none;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .tg-input:focus {
+        border-color: var(--tg-blue);
+        background: rgba(34, 158, 217, 0.09);
+        box-shadow: 0 0 0 3px var(--tg-blue-glow);
+        transform: scale(1.005);
+    }
+
+    .tg-input::placeholder {
+        color: var(--text-muted);
+        font-style: italic;
+    }
+
+    .tg-label {
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--tg-blue);
+        margin-bottom: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    /* Telegram-blue button */
+    .btn-telegram {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.7rem 1.6rem;
+        background: linear-gradient(135deg, var(--tg-blue), var(--tg-blue-dark));
+        border: none;
+        border-radius: 8px;
+        color: #fff;
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 4px 14px var(--tg-blue-glow);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .btn-telegram::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0.15), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+
+    .btn-telegram:hover {
+        transform: translateY(-3px) scale(1.03);
+        box-shadow: 0 6px 22px var(--tg-blue-glow);
+    }
+
+    .btn-telegram:hover::before { opacity: 1; }
+
+    .btn-telegram:active { transform: translateY(0) scale(0.98); }
+
+    /* Test button */
+    .btn-test {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 0.7rem 1.4rem;
+        background: transparent;
+        border: 1px solid var(--tg-blue);
+        border-radius: 8px;
+        color: var(--tg-blue);
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-test:hover {
+        background: var(--tg-blue-bg);
+        box-shadow: 0 0 18px var(--tg-blue-glow);
+        transform: translateY(-2px);
+        color: #fff;
+    }
+
+    /* Status feedback badge */
+    .status-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0.4rem 1rem;
+        border-radius: 20px;
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        animation: badgeFadeIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    @keyframes badgeFadeIn {
+        0% { opacity: 0; transform: scale(0.7); }
+        70% { transform: scale(1.05); }
+        100% { opacity: 1; transform: scale(1); }
+    }
+
+    .status-badge.success { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.25); color: #10b981; }
+    .status-badge.error   { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #ef4444; }
+    .status-badge.loading { background: var(--tg-blue-bg); border: 1px solid var(--tg-blue-border); color: var(--tg-blue); }
+
+    /* Toggle switch */
+    .toggle-switch {
+        position: relative;
+        width: 44px; height: 24px;
+        cursor: pointer;
+    }
+
+    .toggle-switch input { display: none; }
+
+    .toggle-track {
+        width: 100%; height: 100%;
+        border-radius: 12px;
+        background: var(--border-dark);
+        transition: all 0.3s;
+        position: relative;
+    }
+
+    .toggle-thumb {
+        position: absolute;
+        top: 3px; left: 3px;
+        width: 18px; height: 18px;
+        border-radius: 50%;
+        background: #fff;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    .toggle-switch input:checked + .toggle-track { background: var(--tg-blue); box-shadow: 0 0 8px var(--tg-blue-glow); }
+    .toggle-switch input:checked + .toggle-track .toggle-thumb { left: 23px; }
+
+    /* Divider with gradient */
+    .tg-divider {
+        height: 1px;
+        background: linear-gradient(90deg, var(--tg-blue-border), transparent);
+        margin: 1.25rem 0;
+    }
+
+    /* Active indicator */
+    .live-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: var(--tg-blue);
+        display: inline-block;
+        animation: statusBlink 2s ease-in-out infinite;
+        box-shadow: 0 0 6px var(--tg-blue);
+    }
+
+    /* Light mode */
+    html.light .tg-input { background: rgba(34,158,217,0.05); color: #0f172a; border-color: rgba(34,158,217,0.2); }
+    html.light .tg-input:focus { background: rgba(34,158,217,0.09); }
+    html.light .step-item { background: rgba(34,158,217,0.04); }
+    html.light .step-desc { color: #475569; }
+    html.light .step-title { color: #1A7DB5; }
+</style>
+
+<!-- ===== PAGE HEADER ===== -->
+<div class="spring-enter" style="margin-bottom: 1.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 class="cyber-heading" style="font-size: 1.4rem; margin-bottom: 0.4rem;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--tg-blue)" stroke-width="2" style="display:inline;vertical-align:middle;margin-right:8px;">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"/>
+            </svg>
+            Telegram Notifications
+        </h1>
+        <p class="cyber-subheading">Receive real-time honeypot alerts directly in your Telegram.</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        {% if tg and tg.is_active %}
+        <span class="live-dot"></span>
+        <span style="font-size: 0.7rem; color: var(--tg-blue); letter-spacing: 1px; font-weight: 600;">ALERTS ACTIVE</span>
+        {% else %}
+        <span style="font-size: 0.7rem; color: var(--text-muted); letter-spacing: 1px;">NOT CONFIGURED</span>
+        {% endif %}
+    </div>
+</div>
+
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+
+    <!-- ===== LEFT: STEP-BY-STEP GUIDE ===== -->
+    <div class="cyber-card spring-enter" style="animation-delay: 0.1s; border-color: var(--tg-blue-border);">
+        <!-- Card top accent bar -->
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--tg-blue), transparent); border-radius: 12px 12px 0 0;"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem;">
+            <div style="width: 38px; height: 38px; border-radius: 9px; background: var(--tg-blue-bg); border: 1px solid var(--tg-blue-border); display: flex; align-items: center; justify-content: center;">
+                <!-- Telegram Icon -->
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--tg-blue)">
+                    <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.03 9.57c-.148.662-.557.822-1.128.51l-3.1-2.285-1.497 1.441c-.164.164-.303.303-.624.303l.222-3.164 5.76-5.202c.25-.222-.054-.344-.39-.122l-7.12 4.484-3.068-.953c-.667-.206-.68-.667.14-.987l11.98-4.62c.555-.202 1.04.123.855.025z"/>
+                </svg>
+            </div>
+            <div>
+                <h2 style="font-size: 0.9rem; font-weight: 700; color: var(--tg-blue); letter-spacing: 0.5px;">Setup Guide</h2>
+                <p style="font-size: 0.7rem; color: var(--text-muted);">4 steps to connect your bot</p>
+            </div>
+        </div>
+
+        <div class="tg-divider"></div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+            <div class="step-item">
+                <div class="step-badge">1</div>
+                <div>
+                    <p class="step-title">Create your Bot</p>
+                    <p class="step-desc">Open Telegram and message <strong style="color:var(--tg-blue);">@BotFather</strong>. Send <code style="background:rgba(34,158,217,0.12);padding:1px 5px;border-radius:4px;font-size:0.7rem;">/newbot</code> and follow the steps to get your API token.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">2</div>
+                <div>
+                    <p class="step-title">Copy the API Token</p>
+                    <p class="step-desc">BotFather will give you a token like <code style="background:rgba(34,158,217,0.12);padding:1px 5px;border-radius:4px;font-size:0.7rem;">7123456789:AAF...</code> — paste it in the field on the right.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">3</div>
+                <div>
+                    <p class="step-title">Get your Chat ID</p>
+                    <p class="step-desc">Message <strong style="color:var(--tg-blue);">@userinfobot</strong> on Telegram. It will reply with your numeric Chat ID (e.g. <code style="background:rgba(34,158,217,0.12);padding:1px 5px;border-radius:4px;font-size:0.7rem;">-1234567890</code>).</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-badge">4</div>
+                <div>
+                    <p class="step-title">Test &amp; Activate</p>
+                    <p class="step-desc">Click <strong style="color:var(--tg-blue);">Test Connection</strong> to verify. If a message appears in Telegram, click <strong style="color:#10b981;">Save &amp; Activate</strong> to go live.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Alert format preview -->
+        <div class="tg-divider"></div>
+        <p style="font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 0.75rem;">Alert Preview</p>
+        <div style="background: #0f171e; border: 1px solid rgba(34,158,217,0.15); border-radius: 10px; padding: 1rem; font-family: var(--font-mono); font-size: 0.72rem; line-height: 1.8; color: #e2e8f0;">
+            <span style="color:#ef4444;font-weight:700;">🚨 DefroxPot Alert</span><br>
+            <span style="color:#64748b;">────────────────────</span><br>
+            <span style="color:#22d3ee;">⌨️ Event:</span> <span style="color:#f8fafc;">KEYLOG</span><br>
+            <span style="color:#22d3ee;">🌐 Protocol:</span> <span style="color:#f8fafc;">TCP</span><br>
+            <span style="color:#22d3ee;">📍 IP:</span> <span style="color:#f8fafc;">203.0.113.14</span><br>
+            <span style="color:#22d3ee;">⏰ Time:</span> <span style="color:#f8fafc;">2026-04-08 05:30:12</span><br>
+            <span style="color:#22d3ee;">💻 Payload:</span> <span style="color:#f8fafc;">admin pass123 [ENTER]</span><br>
+            <span style="color:#64748b;">────────────────────</span><br>
+            <span style="color:#64748b; font-style: italic;">Powered by DefroxPot Enterprise</span>
+        </div>
+    </div>
+
+    <!-- ===== RIGHT: CONFIGURATION FORM ===== -->
+    <div class="cyber-card spring-enter" style="animation-delay: 0.2s; border-color: var(--tg-blue-border);">
+        <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--tg-blue), transparent); border-radius: 12px 12px 0 0;"></div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 1.25rem;">
+            <div style="width: 38px; height: 38px; border-radius: 9px; background: var(--tg-blue-bg); border: 1px solid var(--tg-blue-border); display: flex; align-items: center; justify-content: center;">
+                <svg width="18" height="18" fill="none" stroke="var(--tg-blue)" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </div>
+            <div>
+                <h2 style="font-size: 0.9rem; font-weight: 700; color: var(--tg-blue); letter-spacing: 0.5px;">Configuration</h2>
+                <p style="font-size: 0.7rem; color: var(--text-muted);">Connect your Telegram bot</p>
+            </div>
+        </div>
+
+        <div class="tg-divider"></div>
+
+        <form id="tg-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+            {% csrf_token %}
+
+            <!-- Bot Token -->
+            <div>
+                <label class="tg-label">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 5.25a3 3 0 013 3m3 0a6 6 0 01-7.029 5.912c-.563-.097-1.159.026-1.563.43L10.5 17.25H8.25v2.25H6v2.25H2.25v-2.818c0-.597.237-1.17.659-1.591l6.499-6.499c.404-.404.527-1 .43-1.563A6 6 0 1121.75 8.25z"/></svg>
+                    Bot API Token
+                </label>
+                <input
+                    type="password"
+                    id="bot-token"
+                    class="tg-input"
+                    placeholder="7123456789:AAFxxxxxxxxxxxxx"
+                    autocomplete="off"
+                    value="{{ tg.bot_token|default:'' }}"
+                >
+                <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 5px;">Get this from @BotFather on Telegram</p>
+            </div>
+
+            <!-- Chat ID -->
+            <div>
+                <label class="tg-label">
+                    <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z"/></svg>
+                    Chat ID
+                </label>
+                <input
+                    type="text"
+                    id="chat-id"
+                    class="tg-input"
+                    placeholder="-1001234567890"
+                    autocomplete="off"
+                    value="{{ tg.chat_id|default:'' }}"
+                >
+                <p style="font-size: 0.65rem; color: var(--text-muted); margin-top: 5px;">Get this from @userinfobot on Telegram</p>
+            </div>
+
+            <!-- Active toggle -->
+            <div style="display: flex; align-items: center; justify-content: space-between; padding: 0.75rem 1rem; background: var(--tg-blue-bg); border: 1px solid var(--tg-blue-border); border-radius: 8px;">
+                <div>
+                    <p style="font-size: 0.82rem; font-weight: 600; color: var(--text-primary); margin-bottom: 2px;">Enable Real-Time Alerts</p>
+                    <p style="font-size: 0.68rem; color: var(--text-muted);">Receive a Telegram message for every new captured event</p>
+                </div>
+                <label class="toggle-switch" for="tg-active">
+                    <input type="checkbox" id="tg-active" {% if tg and tg.is_active %}checked{% endif %}>
+                    <div class="toggle-track"><div class="toggle-thumb"></div></div>
+                </label>
+            </div>
+
+            <!-- Status message -->
+            <div id="tg-status" style="display:none;"></div>
+
+            <!-- Buttons -->
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 0.5rem;">
+                <button type="button" class="btn-test" id="btn-test" onclick="testConnection()">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Test Connection
+                </button>
+                <button type="button" class="btn-telegram" id="btn-save" onclick="saveSettings()">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.03 9.57c-.148.662-.557.822-1.128.51l-3.1-2.285-1.497 1.441c-.164.164-.303.303-.624.303l.222-3.164 5.76-5.202c.25-.222-.054-.344-.39-.122l-7.12 4.484-3.068-.953c-.667-.206-.68-.667.14-.987l11.98-4.62c.555-.202 1.04.123.855.025z"/>
+                    </svg>
+                    Save &amp; Activate
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- ===== RECENT STATUS CARD (if configured) ===== -->
+{% if tg and tg.has_credentials %}
+<div class="cyber-card spring-enter" style="margin-top: 1.5rem; animation-delay: 0.3s; border-color: var(--tg-blue-border);">
+    <div style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--tg-blue), transparent); border-radius: 12px 12px 0 0;"></div>
+    <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span class="live-dot"></span>
+            <div>
+                <p style="font-size: 0.85rem; font-weight: 600; color: var(--text-primary);">Telegram Bot Connected</p>
+                <p style="font-size: 0.68rem; color: var(--text-muted); margin-top: 2px;">
+                    Alerts {{ tg.is_active|yesno:"enabled,disabled" }} &mdash;
+                    Last updated: {{ tg.updated_at|date:"M d, Y H:i" }}
+                </p>
+            </div>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+            <a href="{% url 'export_report' %}" class="cyber-btn cyber-btn-green" style="text-decoration: none; font-size: 0.72rem; padding: 0.5rem 1rem;">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                </svg>
+                Export CSV Report
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script>
+function getCookie(name) {
+    let val = null;
+    document.cookie.split(';').forEach(c => {
+        if (c.trim().startsWith(name + '=')) val = decodeURIComponent(c.trim().slice(name.length + 1));
+    });
+    return val;
+}
+
+function showStatus(msg, type) {
+    const el = document.getElementById('tg-status');
+    el.style.display = 'block';
+    el.innerHTML = `<span class="status-badge ${type}">
+        ${type === 'success' ? '&#9989;' : type === 'error' ? '&#10060;' : '&#9203;'} ${msg}
+    </span>`;
+}
+
+function testConnection() {
+    const btn = document.getElementById('btn-test');
+    const botToken = document.getElementById('bot-token').value.trim();
+    const chatId = document.getElementById('chat-id').value.trim();
+
+    if (!botToken || !chatId) {
+        showStatus('Please enter both Bot Token and Chat ID first.', 'error');
+        return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+    showStatus('Sending test message...', 'loading');
+
+    fetch("{% url 'test_telegram' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ bot_token: botToken, chat_id: chatId })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'ok') {
+            showStatus(data.message, 'success');
+        } else {
+            showStatus(data.message || 'Connection failed. Check your credentials.', 'error');
+        }
+    })
+    .catch(() => showStatus('Network error. Is Django running?', 'error'))
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg> Test Connection`;
+    });
+}
+
+function saveSettings() {
+    const btn = document.getElementById('btn-save');
+    const botToken = document.getElementById('bot-token').value.trim();
+    const chatId = document.getElementById('chat-id').value.trim();
+    const isActive = document.getElementById('tg-active').checked;
+
+    if (!botToken || !chatId) {
+        showStatus('Bot Token and Chat ID cannot be empty.', 'error');
+        return;
+    }
+
+    btn.disabled = true;
+    showStatus('Saving...', 'loading');
+
+    fetch("{% url 'save_telegram' %}", {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken'),
+        },
+        body: JSON.stringify({ bot_token: botToken, chat_id: chatId, is_active: isActive })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.status === 'saved') {
+            showStatus('Settings saved! Alerts are now ' + (isActive ? 'ACTIVE' : 'paused') + '.', 'success');
+        } else {
+            showStatus(data.message || 'Save failed.', 'error');
+        }
+    })
+    .catch(() => showStatus('Network error while saving.', 'error'))
+    .finally(() => {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248l-2.03 9.57c-.148.662-.557.822-1.128.51l-3.1-2.285-1.497 1.441c-.164.164-.303.303-.624.303l.222-3.164 5.76-5.202c.25-.222-.054-.344-.39-.122l-7.12 4.484-3.068-.953c-.667-.206-.68-.667.14-.987l11.98-4.62c.555-.202 1.04.123.855.025z"/></svg> Save &amp; Activate`;
+    });
+}
+</script>
+
+{% endblock %}

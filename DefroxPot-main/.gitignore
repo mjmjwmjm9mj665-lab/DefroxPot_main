@@ -1,0 +1,107 @@
+# ─── Python ────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.pyd
+
+# ─── Build / Packaging ─────────────────────────────────────
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# ─── PyInstaller ───────────────────────────────────────────
+*.manifest
+*.spec
+
+# ─── Testing ───────────────────────────────────────────────
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+cover/
+
+# ─── Django ────────────────────────────────────────────────
+*.log
+local_settings.py
+db.sqlite3
+db.sqlite3-journal
+users.db
+
+# ─── Flask ─────────────────────────────────────────────────
+instance/
+.webassets-cache
+
+# ─── Honeypot runtime data (never commit captured logs) ────
+honeypot/Honeypot_Project_final/var/*.log
+honeypot/Honeypot_Project_final/uploads/
+
+# ─── Environments ──────────────────────────────────────────
+.env
+.env.*
+.venv
+env/
+venv/
+myenv/
+myevn/
+ENV/
+env.bak/
+venv.bak/
+
+# ─── IDEs / Editors ────────────────────────────────────────
+.idea/
+.vscode/
+*.suo
+*.user
+.spyderproject
+.spyproject
+.ropeproject
+
+# ─── OS files ──────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ─── Static analysis ───────────────────────────────────────
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pyre/
+.pytype/
+cython_debug/
+.pdm.toml
+.pdm-python
+.pdm-build/
+__pypackages__/
+
+# ─── Notebooks ─────────────────────────────────────────────
+.ipynb_checkpoints
+
+# ─── Misc ──────────────────────────────────────────────────
+pip-log.txt
+pip-delete-this-directory.txt
+celerybeat-schedule
+celerybeat.pid
+*.sage.py
+/site

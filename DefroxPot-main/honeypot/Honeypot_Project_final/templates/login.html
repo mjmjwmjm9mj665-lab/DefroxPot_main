@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    
+    <style>
+        /* Modern Background Gradient */
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Glassmorphism Card Effect */
+        .login-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            color: white;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .form-control {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            border-radius: 10px;
+            color: white;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+            box-shadow: none;
+            transform: translateY(-2px);
+        }
+
+        .form-control::placeholder {
+            color: #ddd;
+        }
+
+        /* Button Animation */
+        .btn-custom {
+            background: #fff;
+            color: #764ba2;
+            font-weight: bold;
+            border-radius: 10px;
+            border: none;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-custom:hover {
+            background: #764ba2;
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        a {
+            color: #ffde59;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* Floating Shapes for Background decoration */
+        .shape {
+            position: absolute;
+            z-index: -1;
+            filter: blur(50px);
+        }
+    </style>
+</head>
+<body onload="myFunction()">
+
+<div class="shape" style="top: 10%; left: 10%; width: 200px; height: 200px; background: #ff0080; border-radius: 50%;"></div>
+<div class="shape" style="bottom: 10%; right: 10%; width: 300px; height: 300px; background: #00dbde; border-radius: 50%;"></div>
+
+<div class="container d-flex justify-content-center">
+    <div class="login-card animate__animated animate__fadeInDown">
+        <h2 class="text-center mb-4">Welcome Back</h2>
+        
+        <form method="post" action="{{ url_for('login') }}">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" tabindex="1" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+            </div>
+            
+            <button type="submit" class="btn btn-custom btn-block mt-4">Login Now</button>
+            
+            <p class="mt-4 text-center">
+                New here? <a href="{{ url_for('register') }}">Create an account</a>
+            </p>
+        </form>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="/static/js/script.js"></script>
+
+</body>
+</html>

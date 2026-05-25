@@ -1,0 +1,279 @@
+{% extends 'base.html' %}
+{% block body %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const button = document.getElementById('server-button');
+        const nbutton = document.getElementById('network-button');
+        const serverInfo = document.getElementById('server-info');
+
+        function updateButton(status) {
+            if (status === 'running') {
+                button.innerHTML = `
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"/>
+                    </svg>
+                    <span>Stop</span>
+                `;
+                button.className = 'cyber-btn cyber-btn-red';
+                button.onclick = stopServer;
+            } else if (status === 'stopped') {
+                button.innerHTML = `
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 10 16">
+                        <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"/>
+                    </svg>
+                    <span>Deploy</span>
+                `;
+                button.className = 'cyber-btn cyber-btn-green';
+                button.onclick = startServer;
+            } else if (status === 'loading') {
+                button.innerHTML = `
+                    <svg style="animation: spin 1s linear infinite;" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                    </svg>
+                    Initializing...
+                `;
+                button.disabled = true;
+                button.className = 'cyber-btn cyber-btn-blue';
+            }
+        }
+
+        function updateButtonnetwork(status) {
+            if (status === 'running') {
+                nbutton.innerHTML = `
+                    <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.636 5.636a9 9 0 1012.728 0M12 3v9"/>
+                    </svg>
+                    <span>Stop</span>
+                `;
+                nbutton.className = 'cyber-btn cyber-btn-red';
+                nbutton.onclick = stopNetwork;
+            } else if (status === 'stopped') {
+                nbutton.innerHTML = `
+                    <svg width="14" height="14" fill="currentColor" viewBox="0 0 10 16">
+                        <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"/>
+                    </svg>
+                    <span>Deploy</span>
+                `;
+                nbutton.className = 'cyber-btn cyber-btn-green';
+                nbutton.onclick = startnetwork;
+            } else if (status === 'loading') {
+                nbutton.innerHTML = `
+                    <svg style="animation: spin 1s linear infinite;" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"/>
+                    </svg>
+                    Initializing...
+                `;
+                nbutton.disabled = true;
+                nbutton.className = 'cyber-btn cyber-btn-blue';
+            }
+        }
+
+        function startServer() {
+            updateButton('loading');
+            fetch('/start-flask-server', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'started') {
+                        updateButton('running');
+                        serverInfo.innerText = `Website honeypot live at http://${data.ip}:${data.port}`;
+                        serverInfo.style.color = 'var(--neon-green)';
+                    } else { updateButton('stopped'); }
+                });
+        }
+
+        function startnetwork() {
+            updateButtonnetwork('loading');
+            fetch('/start-network-server', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'started') { updateButtonnetwork('running'); }
+                    else { updateButtonnetwork('stopped'); }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function stopServer() {
+            updateButton('loading');
+            fetch('/stop-flask-server', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'stopped') {
+                        updateButton('stopped');
+                        serverInfo.innerText = '';
+                    } else { updateButton('running'); }
+                });
+        }
+
+        function stopNetwork() {
+            updateButtonnetwork('loading');
+            fetch('/stop-network-server', {
+                method: 'POST',
+                headers: { 'X-CSRFToken': getCookie('csrftoken') }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'stopped') { updateButtonnetwork('stopped'); }
+                    else { updateButtonnetwork('running'); }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        fetch('/server-setup')
+            .then(response => response.json())
+            .then(data => { updateButton(data.status); });
+
+        fetch('/network-setup')
+            .then(response => response.json())
+            .then(networkStatus => { updateButtonnetwork(networkStatus.status); });
+    });
+</script>
+
+<style>
+    @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+
+        to {
+            transform: rotate(360deg);
+        }
+    }
+</style>
+
+<!-- Header -->
+<div class="spring-enter" style="margin-bottom: 2rem;">
+    <h1 class="cyber-heading" style="font-size: 1.4rem; margin-bottom: 0.4rem;">
+        ⚙ Setup & Deployment
+    </h1>
+    <p class="cyber-subheading">Deploy and manage your honeypot trap services</p>
+</div>
+
+<!-- Service Cards Grid -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 1.25rem;">
+
+    <!-- Network Service Card -->
+    <div class="cyber-card spring-enter" style="animation-delay: 0.1s;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+            <div
+                style="width: 44px; height: 44px; border-radius: 10px; background: rgba(0,255,255,0.08); border: 1px solid rgba(0,255,255,0.15); display: flex; align-items: center; justify-content: center;">
+                <svg width="22" height="22" fill="none" stroke="var(--neon-blue)" stroke-width="2" viewBox="0 0 24 24"
+                    style="filter: drop-shadow(0 0 4px var(--neon-blue));">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+                </svg>
+            </div>
+            <div>
+                <h2
+                    style="font-family: var(--font-display); font-size: 0.9rem; color: var(--neon-blue); letter-spacing: 1px; text-shadow: 0 0 8px rgba(0,255,255,0.3);">
+                    Network Trap
+                </h2>
+                <p style="font-size: 0.7rem; color: var(--text-muted);">SSH + FTP Honeypot Services</p>
+            </div>
+        </div>
+        <div
+            style="height: 1px; background: linear-gradient(90deg, rgba(0,255,255,0.15), transparent); margin-bottom: 1.25rem;">
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <button id="network-button" class="cyber-btn cyber-btn-green">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 10 16">
+                    <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z" />
+                </svg>
+                <span>Deploy</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Website Service Card -->
+    <div class="cyber-card spring-enter" style="animation-delay: 0.2s;">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+            <div
+                style="width: 44px; height: 44px; border-radius: 10px; background: rgba(188,19,254,0.08); border: 1px solid rgba(188,19,254,0.15); display: flex; align-items: center; justify-content: center;">
+                <svg width="22" height="22" fill="none" stroke="var(--neon-purple)" stroke-width="2" viewBox="0 0 24 24"
+                    style="filter: drop-shadow(0 0 4px var(--neon-purple));">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M2.25 5.25a3 3 0 013-3h13.5a3 3 0 013 3V15a3 3 0 01-3 3h-3v.257c0 .597.237 1.17.659 1.591l.621.622a.75.75 0 01-.53 1.28h-9a.75.75 0 01-.53-1.28l.621-.622a2.25 2.25 0 00.659-1.59V18h-3a3 3 0 01-3-3V5.25z" />
+                </svg>
+            </div>
+            <div>
+                <h2
+                    style="font-family: var(--font-display); font-size: 0.9rem; color: var(--neon-purple); letter-spacing: 1px; text-shadow: 0 0 8px rgba(188,19,254,0.3);">
+                    Website Trap
+                </h2>
+                <p style="font-size: 0.7rem; color: var(--text-muted);">Flask Web Honeypot on port 5000</p>
+            </div>
+        </div>
+        <div
+            style="height: 1px; background: linear-gradient(90deg, rgba(188,19,254,0.15), transparent); margin-bottom: 1.25rem;">
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <button id="server-button" class="cyber-btn cyber-btn-green">
+                <svg width="14" height="14" fill="currentColor" viewBox="0 0 10 16">
+                    <path d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z" />
+                </svg>
+                <span>Deploy</span>
+            </button>
+            <p id="server-info" style="font-size: 0.75rem; color: var(--text-muted);"></p>
+        </div>
+    </div>
+    <!-- Maintenance / Clear Logs Card -->
+    <div class="cyber-card spring-enter" style="animation-delay: 0.3s; border-color: rgba(255, 60, 60, 0.2);">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem;">
+            <div
+                style="width: 44px; height: 44px; border-radius: 10px; background: rgba(255, 60, 60, 0.08); border: 1px solid rgba(255, 60, 60, 0.15); display: flex; align-items: center; justify-content: center;">
+                <svg width="22" height="22" fill="none" stroke="#ff4d4d" stroke-width="2" viewBox="0 0 24 24"
+                    style="filter: drop-shadow(0 0 4px #ff4d4d);">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+            </div>
+            <div>
+                <h2
+                    style="font-family: var(--font-display); font-size: 0.9rem; color: #ff4d4d; letter-spacing: 1px; text-shadow: 0 0 8px rgba(255, 60, 60, 0.3);">
+                    Maintenance
+                </h2>
+                <p style="font-size: 0.7rem; color: var(--text-muted);">Securely wipe all logs & captured files</p>
+            </div>
+        </div>
+        <div
+            style="height: 1px; background: linear-gradient(90deg, rgba(255, 60, 60, 0.15), transparent); margin-bottom: 1.25rem;">
+        </div>
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <a href="{% url 'clear_logs' %}"
+                onclick="return confirm('Are you sure you want to permanently delete ALL logs, keystrokes, and downloaded files? This action cannot be undone.');"
+                class="cyber-btn cyber-btn-red" style="text-decoration: none;">
+                <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                </svg>
+                <span>Clear History</span>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

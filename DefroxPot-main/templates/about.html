@@ -1,0 +1,181 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DefroxPot - Executive Profile</title>
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        trustBlue: '#2563EB',
+                        slateGray: '#475569',
+                        safeEmerald: '#10B981'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(148, 163, 184, 0.3); border-radius: 4px; }
+        
+        .hover-physics { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease; }
+        .hover-physics:hover { transform: scale(0.98) translateY(2px); }
+        body { transition: background-color 0.5s ease-in-out; }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-200 transition-colors duration-500 font-sans min-h-screen pb-12 flex flex-col items-center">
+
+    <!-- Header Navigation -->
+    <div class="w-full max-w-[1000px] mx-auto px-6 py-6 mb-8 flex items-center justify-between z-10 sticky top-0 bg-slate-50/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-transparent">
+        <a href="{% url 'dashboard' %}" class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <svg class="w-5 h-5 text-trustBlue dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
+            <span class="font-semibold tracking-tight text-slate-900 dark:text-white">Command Center</span>
+        </a>
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" type="button" class="text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 rounded-lg text-sm p-2 transition-colors">
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 2.32a1 1 0 011.415 0l.708.707a1 1 0 01-1.414 1.415l-.708-.708a1 1 0 010-1.414zM16 10a1 1 0 011 1h1a1 1 0 110 2h-1a1 1 0 01-1-1v-1zm-2.32 4.22a1 1 0 010 1.415l-.708.707a1 1 0 11-1.414-1.414l.708-.708a1 1 0 011.414 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.22-2.32a1 1 0 010-1.415l-.707-.708a1 1 0 011.415-1.414l.707.708a1 1 0 01-1.415 1.415zM4 10a1 1 0 01-1-1H2a1 1 0 110-2h1a1 1 0 011 1v1zm2.32-4.22a1 1 0 011.415 0l.708.707a1 1 0 01-1.414 1.415L6.32 5.78a1 1 0 010-1.415zM10 5a5 5 0 100 10 5 5 0 000-10z"></path>
+                </svg>
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="w-full max-w-[1000px] px-6">
+        
+        <!-- Profile Header -->
+        <div id="ui-profile-hdr" class="backdrop-blur-md bg-white/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 rounded-3xl p-8 shadow-sm flex flex-col md:flex-row items-center md:items-start gap-8 mb-10 text-center md:text-left hover-physics">
+            <div class="relative shrink-0">
+                <div class="absolute inset-0 bg-blue-500 blur-xl opacity-20 dark:opacity-30 rounded-full"></div>
+                <img src="{% static 'img/developer.jpg' %}" alt="Arjun Jat" class="relative w-32 h-32 rounded-full border-4 border-white dark:border-slate-800 object-cover shadow-lg">
+                <div class="absolute -bottom-2 -right-2 bg-blue-100 dark:bg-blue-900 border border-white dark:border-slate-800 text-trustBlue dark:text-blue-400 p-2 rounded-full shadow-sm">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" /></svg>
+                </div>
+            </div>
+            <div class="flex-grow">
+                <h1 class="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Arjun Jat</h1>
+                <h2 class="text-sm font-semibold text-trustBlue dark:text-blue-400 mt-1 uppercase tracking-wider">Cyber Security Analyst & Deception Engineer</h2>
+                <p class="mt-4 text-sm text-slate-600 dark:text-slate-400 leading-relaxed max-w-2xl">
+                    Dedicated security researcher and deception engineer committed to architecting highly-resilient, dynamic architectures. Blending offensive capability with Enterprise design principles for the ultimate Hacker-Commander experience.
+                </p>
+                <div class="mt-6 flex flex-wrap gap-2 justify-center md:justify-start">
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 text-[0.65rem] font-bold text-slate-700 dark:text-slate-300 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-trustBlue rounded-full"></span>SECURITY RESEARCHER</span>
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 text-[0.65rem] font-bold text-slate-700 dark:text-slate-300 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-safeEmerald rounded-full"></span>DECEPTION ENGINEER</span>
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700/50 border border-slate-200 dark:border-slate-600 text-[0.65rem] font-bold text-slate-700 dark:text-slate-300 rounded-full flex items-center gap-1.5"><span class="w-1.5 h-1.5 bg-purple-500 rounded-full"></span>C-ADPENX CERTIFIED</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Professional Timeline -->
+        <div class="relative pl-4 md:pl-8 border-l-2 border-slate-200 dark:border-slate-700/60 ml-4 mb-20 space-y-10" id="ui-timeline">
+            
+            <div class="gsap-timeline-item relative">
+                <div class="absolute -left-[23px] md:-left-[39px] w-10 h-10 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center z-10 shadow-sm text-trustBlue">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path></svg>
+                </div>
+                <div class="pl-8">
+                    <div class="backdrop-blur-md bg-white/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm hover-physics">
+                        <div class="text-[0.65rem] font-bold text-trustBlue tracking-widest uppercase mb-1">Certification</div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Advanced Penetration Testing (C-ADPENX)</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Achieved master-level certification validating advanced persistent threat capabilities, deep-network pivoting, and custom exploit development within highly regulated environments.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gsap-timeline-item relative">
+                <div class="absolute -left-[23px] md:-left-[39px] w-10 h-10 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center z-10 shadow-sm text-safeEmerald">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                </div>
+                <div class="pl-8">
+                    <div class="backdrop-blur-md bg-white/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm hover-physics">
+                        <div class="text-[0.65rem] font-bold text-safeEmerald tracking-widest uppercase mb-1">Achievement</div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Elite Bug Bounty Hunter</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Identified and safely reported critical zero-day vulnerabilities in <strong class="text-slate-800 dark:text-slate-200">Panjab University Pakistan</strong>. Acknowledged for ensuring educational institution integrity through responsible disclosure protocols.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gsap-timeline-item relative">
+                <div class="absolute -left-[23px] md:-left-[39px] w-10 h-10 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center z-10 shadow-sm text-purple-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+                </div>
+                <div class="pl-8">
+                    <div class="backdrop-blur-md bg-white/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm hover-physics">
+                        <div class="text-[0.65rem] font-bold text-purple-500 tracking-widest uppercase mb-1">Expertise</div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Certified Offensive Security Professional</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Certified Deception Strategist prioritizing the architecture of untraceable honeypot traps, synthetic file systems, and real-time adversary manipulation.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="gsap-timeline-item relative">
+                <div class="absolute -left-[23px] md:-left-[39px] w-10 h-10 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-full flex items-center justify-center z-10 shadow-sm text-amber-500">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path></svg>
+                </div>
+                <div class="pl-8">
+                    <div class="backdrop-blur-md bg-white/70 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700/50 rounded-2xl p-6 shadow-sm hover-physics">
+                        <div class="text-[0.65rem] font-bold text-amber-500 tracking-widest uppercase mb-1">Project Milestone</div>
+                        <h3 class="text-lg font-bold text-slate-900 dark:text-white mb-2">Developed DefroxPot Enterprise</h3>
+                        <p class="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">Creator of the Modern Cyber Deception Platform. Innovated a professional, immersive, and highly secure dashboard interface spanning <strong class="text-slate-800 dark:text-slate-200">Secure Web And Network</strong> protocols.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- Theme Toggle Logic ---
+        const themeBtn = document.getElementById('theme-toggle');
+        const dIcon = document.getElementById('theme-toggle-dark-icon');
+        const lIcon = document.getElementById('theme-toggle-light-icon');
+
+        if (document.documentElement.classList.contains('dark')) lIcon.classList.remove('hidden');
+        else dIcon.classList.remove('hidden');
+
+        themeBtn.addEventListener('click', () => {
+            dIcon.classList.toggle('hidden');
+            lIcon.classList.toggle('hidden');
+            document.documentElement.classList.toggle('dark');
+        });
+
+        // --- Animations ---
+        if (typeof gsap !== 'undefined') {
+            gsap.from('#ui-profile-hdr', { y: 30, opacity: 0, duration: 1, ease: 'power3.out' });
+            gsap.from('.gsap-timeline-item', {
+                x: -40, opacity: 0,
+                duration: 0.8, ease: 'back.out(1.5)',
+                stagger: 0.15, delay: 0.3,
+                clearProps: 'all'
+            });
+        }
+    });
+    </script>
+</body>
+</html>

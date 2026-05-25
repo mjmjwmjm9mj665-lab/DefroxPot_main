@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% block body %}
+{% load custom_filters %}
+
+<div class="spring-enter" style="margin-bottom: 1.5rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;">
+    <div>
+        <h1 class="cyber-heading" style="font-size: 1.4rem; margin-bottom: 0.4rem;">
+            ⬡ Network Logs
+        </h1>
+        <p class="cyber-subheading">Captured network traffic and SSH/FTP intrusion attempts</p>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <span class="status-online"></span>
+        <span style="font-size: 0.7rem; color: var(--neon-green); letter-spacing: 1px;">LIVE FEED</span>
+    </div>
+</div>
+
+{% if keys %}
+<div class="spring-enter" style="animation-delay: 0.15s; overflow-x: auto; border-radius: 12px; border: 1px solid var(--border-dark);">
+    <table class="cyber-table">
+        <thead>
+            <tr>
+                {% for key in keys %}
+                <th>{{key}}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for key_log in key_logs %}
+            <tr>
+                {% for key in keys %}
+                <td>{{ key_log|get_value:key }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="cyber-card spring-enter" style="animation-delay: 0.15s; text-align: center; padding: 3rem;">
+    <svg width="48" height="48" fill="none" stroke="var(--text-muted)" stroke-width="1" viewBox="0 0 24 24" style="margin: 0 auto 1rem; opacity: 0.4;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+    </svg>
+    <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.5rem;">No network logs captured yet</p>
+    <p style="font-size: 0.7rem; color: var(--text-muted);">Deploy the network honeypot from <a href="{% url 'setup' %}" style="color: var(--neon-purple); text-decoration: none;">Setup</a> to start capturing.</p>
+</div>
+{% endif %}
+
+{% endblock %}
