@@ -5,16 +5,14 @@
 <img src="https://github.com/TeamDefronix/DefroxPot/assets/64286654/c8b70e39-59d1-4a4c-9ada-74b7dba0e923" width="55%"><br>
 
 <img src="https://forthebadge.com/images/badges/made-with-python.svg">
-<img src="https://forthebadge.com/images/badges/built-with-love.svg">
+
 
 <br><br>
 
 <a href="https://github.com/TeamDefronix/DefroxPot/releases/latest">
   <img alt="Latest release" src="https://img.shields.io/github/v/release/TeamDefronix/DefroxPot?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"/>
 </a>
-<a href="https://github.com/TeamDefronix/DefroxPot/pulse">
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/TeamDefronix/DefroxPot?style=for-the-badge&logo=starship&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
-</a>
+
 <a href="https://github.com/TeamDefronix/DefroxPot/blob/main/LICENSE">
   <img alt="License" src="https://img.shields.io/github/license/TeamDefronix/DefroxPot?style=for-the-badge&logo=starship&color=ee999f&logoColor=D9E0EE&labelColor=302D41"/>
 </a>
@@ -95,7 +93,7 @@
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/DefroxPot
+git clone https://github.com/mjmjwmjm9mj665-lab/DefroxPot
 cd DefroxPot
 ```
 
