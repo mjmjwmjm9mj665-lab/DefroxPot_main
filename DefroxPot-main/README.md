@@ -91,6 +91,20 @@
 
 ## 🚀 Installation
 
+### ⚡ Quick Start (Windows)
+```cmd
+git clone https://github.com/mjmjwmjm9mj665-lab/DefroxPot_main
+cd DefroxPot_main\DefroxPot-main
+python -m venv venv
+venv\Scripts\activate
+pip install -r requirements.txt
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+```
+
+### Detailed Setup Instructions
+
 ### 1. Clone the Repository
 ```bash
 git clone https://github.com/mjmjwmjm9mj665-lab/DefroxPot
