@@ -236,6 +236,7 @@ This tool is intended **for educational and research purposes only**. Only deplo
 ---
 -->
 
+<!-- 
 ## 🤝 Contributors
 
 <div align="center">
@@ -251,3 +252,4 @@ This tool is intended **for educational and research purposes only**. Only deplo
 ---
 
 *DefroxPot is a professional-grade prototype actively being improved. Contributions, issues, and feature requests are welcome!*
+-->
