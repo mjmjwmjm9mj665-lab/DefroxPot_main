@@ -208,6 +208,13 @@ This tool is intended **for educational and research purposes only**. Only deplo
 
 ## 📞 Contacts
 
+### 👤 Developer
+<p align="left">
+<a href="https://github.com/mjmjwmjm9mj665-lab/DefroxPot_main"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/Github.svg" width="48" height="48" alt="GitHub"/></a>&nbsp;
+<a href="https://www.linkedin.com/in/arjun-jat-b47023369"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/LinkedIN.svg" width="48" height="48" alt="LinkedIn"/></a>
+</p>
+
+### 🏢 Team
 <p align="left">
 <a href="https://github.com/TeamDefronix"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/Github.svg" width="48" height="48" alt="GitHub"/></a>&nbsp;
 <a href="https://www.facebook.com/defronix"><img src="https://raw.githubusercontent.com/gauravghongde/social-icons/master/SVG/Color/Facebook.svg" width="48" height="48" alt="Facebook"/></a>&nbsp;
