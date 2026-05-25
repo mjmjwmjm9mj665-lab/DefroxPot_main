@@ -93,7 +93,7 @@
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/YOUR_USERNAME/DefroxPot
+git clone https://github.com/mjmjwmjm9mj665-lab/DefroxPot
 cd DefroxPot
 ```
 
