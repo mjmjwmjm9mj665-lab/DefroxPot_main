@@ -212,6 +212,7 @@ This tool is intended **for educational and research purposes only**. Only deplo
 <a href="https://www.linkedin.com/in/arjun-jat-b47023369"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/LinkedIN.svg" width="48" height="48" alt="LinkedIn"/></a>
 </p>
 
+<!-- 
 ### 🏢 Team
 <p align="left">
 <a href="https://github.com/TeamDefronix"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/Github.svg" width="48" height="48" alt="GitHub"/></a>&nbsp;
@@ -221,9 +222,11 @@ This tool is intended **for educational and research purposes only**. Only deplo
 <a href="https://youtube.com/@defronix"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/Youtube.svg" width="48" height="48" alt="YouTube"/></a>&nbsp;
 <a href="https://www.linkedin.com/company/defronix/"><img src="https://github.com/gauravghongde/social-icons/raw/master/SVG/Color/LinkedIN.svg" width="48" height="48" alt="LinkedIn"/></a>
 </p>
+-->
 
 ---
 
+<!-- 
 ## 💖 Support the Project
 
 <p>
@@ -231,6 +234,7 @@ This tool is intended **for educational and research purposes only**. Only deplo
 </p>
 
 ---
+-->
 
 ## 🤝 Contributors
 
