@@ -12,9 +12,7 @@
 <a href="https://github.com/TeamDefronix/DefroxPot/releases/latest">
   <img alt="Latest release" src="https://img.shields.io/github/v/release/TeamDefronix/DefroxPot?style=for-the-badge&logo=starship&color=C9CBFF&logoColor=D9E0EE&labelColor=302D41"/>
 </a>
-<a href="https://github.com/TeamDefronix/DefroxPot/pulse">
-  <img alt="Last commit" src="https://img.shields.io/github/last-commit/TeamDefronix/DefroxPot?style=for-the-badge&logo=starship&color=8bd5ca&logoColor=D9E0EE&labelColor=302D41"/>
-</a>
+
 <a href="https://github.com/TeamDefronix/DefroxPot/blob/main/LICENSE">
   <img alt="License" src="https://img.shields.io/github/license/TeamDefronix/DefroxPot?style=for-the-badge&logo=starship&color=ee999f&logoColor=D9E0EE&labelColor=302D41"/>
 </a>
