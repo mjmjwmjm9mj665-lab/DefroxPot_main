@@ -5,7 +5,7 @@
 <img src="https://github.com/TeamDefronix/DefroxPot/assets/64286654/c8b70e39-59d1-4a4c-9ada-74b7dba0e923" width="55%"><br>
 
 <img src="https://forthebadge.com/images/badges/made-with-python.svg">
-<img src="https://forthebadge.com/images/badges/built-with-love.svg">
+
 
 <br><br>
 
